@@ -21,10 +21,9 @@ if __name__ == "__main__":
 	period = social_man.return_period()
 	if since < until:
 		print("nova solicitação!")
-		result = merge_posts(
+		result = separate_months_req(merge_posts(
 			get_face_essencial(social_man, [since, until]),
 			get_insta_essencial(social_man, [since, until]),
 			get_twitter_essencial(twitter_man, [since, until])
-			)
-		pd.DataFrame(result).to_excel("twitter.xlsx")
-	print(result)
+			), period)
+		print(result)
