@@ -13,7 +13,7 @@ print(ACCOUNT, CONFIG_INI_PATH)
 if __name__ == "__main__":
 	sh_man = Sheets_Manager(SHEET_URL, SERVICE_ACC)
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
-	twitter_man = Twitter_Manager('NiteroiPref', BROWSER_DATA_PATH, USER_AGENT, False)
+	twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT, False)
 	dt_man = Date_Utils()
 	
 	sh_config = sh_man.access_sheet('config')
