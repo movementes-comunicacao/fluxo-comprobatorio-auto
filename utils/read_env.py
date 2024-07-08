@@ -1,9 +1,4 @@
-from components.cfg_manager.module.env_manager import Read_env
-
-env_prefix = 'marica'
-"""the name of the .env file before the '.'.
-For now we have 2 possible values: marica and nit"""
-env_variables = Read_env('utils/' + env_prefix + '.env').return_dict()
+from utils.defining_env import env_variables
 
 CONFIG_INI_PATH=env_variables["CONFIG_INI_PATH"]
 ACCOUNT=env_variables["ACCOUNT"]

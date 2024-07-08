@@ -7,8 +7,7 @@ from srcs.utils import *
 from datetime import datetime
 import pandas as pd
 
-print(ACCOUNT, CONFIG_INI_PATH)
-
+env_variable_prefix = "nit"
 
 if __name__ == "__main__":
 	sh_man = Sheets_Manager(SHEET_URL, SERVICE_ACC)
@@ -18,9 +17,8 @@ if __name__ == "__main__":
 	
 	sh_config = sh_man.access_sheet('config')
 	last_dt = datetime.strptime(sh_config.get("F15")[0][0], "%d/%m/%Y %H:%M:%S")
-	# since = last_dt.replace(minute=last_dt.minute+10, second=0)
-	since = datetime(2024, 6, 30)
-	until = datetime.now().replace(day=30, month=6, hour=23, minute=59, second=59, microsecond=0)
+	since = last_dt.replace(minute=last_dt.minute+5, second=0)
+	until = datetime.now().replace(day=datetime.now().day-1, hour=23, minute=59, second=59, microsecond=0)
 	social_man.date_optional = [since, until]
 	period = social_man.return_period()
 	if since < until:
