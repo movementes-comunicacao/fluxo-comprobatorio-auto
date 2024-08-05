@@ -1,18 +1,18 @@
 
+from utils.read_env import *
 from components.Sheets_Manager.module.sheets_manager import Sheets_Manager
 from srcs.auto_sheets.social_extract import *
 from srcs.auto_sheets.sheet_input import *
-from utils.read_env import *
 from srcs.utils import *
 from datetime import datetime, timedelta
 import pandas as pd
 
 env_variable_prefix = "nit"
-
 if __name__ == "__main__":
+
 	sh_man = Sheets_Manager(SHEET_URL, SERVICE_ACC)
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
-	twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT, False)
+	twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
 	dt_man = Date_Utils()
 	
 	sh_config = sh_man.access_sheet('config')
