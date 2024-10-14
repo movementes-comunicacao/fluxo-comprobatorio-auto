@@ -1,7 +1,8 @@
 from components.Sheets_Manager.module.sheets_manager import Sheets_Manager
-from utils.read_env import *
+from components.Thread_Manager.module.scraping_threads import Threads_Manager
 from components.Meta_Manager.module.meta_class import Social_Manager
 from components.Twitter_Manager.module.scraping_twt import Twitter_Manager, BeautifulSoup
+from utils.read_env import *
 
 def get_face_essencial(social_man: Social_Manager, dates: list)->list:        
 	model = social_man.face_description(dates)
@@ -43,4 +44,15 @@ def get_twitter_essencial(twitter_man: Twitter_Manager, dates: list)->list:
 		)
 	return result
 
-
+def get_threads_essencial(threads_man: Threads_Manager, dates: list)->list:
+	model = threads_man.standard_procedure(dates)
+	result = []
+	for post in model:
+		result.append(
+			{
+			 'date_created': post['extra_1'],
+			 'description': post['texts'],
+			 'link_url': post['effective_link']
+			}
+		)
+	return result
