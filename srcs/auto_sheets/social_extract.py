@@ -24,7 +24,7 @@ def get_insta_essencial(social_man: Social_Manager, dates: list)->list:
 		result.append(
 			{
 			 'date_created': post['timestamp'],
-			 'description': post['caption'],
+			 'description': post.get('caption'),
 			 'link_url': post['permalink']
 			}
 		)
