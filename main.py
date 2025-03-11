@@ -1,10 +1,8 @@
 
-from utils.read_env import *
 from components.Sheets_Manager.module.sheets_manager import Sheets_Manager
 from srcs.auto_sheets.social_extract import *
 from srcs.auto_sheets.sheet_input import *
 from components.Thread_Manager.module.scraping_threads import Threads_Manager
-from srcs.utils import *
 from datetime import datetime, timedelta
 import pandas as pd
 
@@ -13,8 +11,8 @@ if __name__ == "__main__":
 
 	sh_man = Sheets_Manager(SHEET_URL, SERVICE_ACC)
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
-	twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
-	threads_man = Threads_Manager("niteroipref", BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
+	# twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
+	# threads_man = Threads_Manager("niteroipref", BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
 	dt_man = Date_Utils()
 	sh_config = sh_man.access_sheet('config')
 	last_dt = datetime.strptime(sh_config.get("F15")[0][0], "%d/%m/%Y %H:%M:%S")
@@ -29,8 +27,7 @@ if __name__ == "__main__":
 		result = merge_posts(
 			get_face_essencial(social_man, [since, until]),
 			get_insta_essencial(social_man, [since, until]),
-			get_twitter_essencial(twitter_man, [since, until]),
-			get_threads_essencial(threads_man, [since, until])
+			getTwitterAndThreads([since, until])
 			)
 		# pd.DataFrame(result).to_excel("Relatorio.xlsx")
 		input_on_sheets(sh_man, result, period, dt_man)
