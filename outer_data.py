@@ -12,8 +12,8 @@ env_variable_prefix = "nit"
 if __name__ == "__main__":
 
 	# sh_man = Sheets_Manager(SHEET_URL, SERVICE_ACC)
-	# social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
-	twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
+	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
+	# twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
 	dt_man = Date_Utils()
 	last_dt = datetime(2025, 2, 16, 16, 20, 0)
 	since = last_dt 
@@ -23,8 +23,8 @@ if __name__ == "__main__":
 		print("nova solicitação!")
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
-			get_twitter_essencial(twitter_man, [since, until]),
-			# get_insta_essencial(social_man, [since, until]),
-			# get_face_essencial(social_man, [since, until])
+			get_insta_essencial(social_man, [since, until]),
+			get_face_essencial(social_man, [since, until]),
+			getTwitterAndThreads([since, until])
 			)
 		pd.DataFrame(result).to_excel("social.xlsx")
