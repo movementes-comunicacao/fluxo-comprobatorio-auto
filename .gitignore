@@ -11,7 +11,8 @@ __pycache__/
 
 # C extensions
 *.so
-
+*.json
+**/test.py
 # Distribution / packaging
 .Python
 build/
