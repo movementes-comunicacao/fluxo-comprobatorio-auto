@@ -7,10 +7,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 *test.py
+*.json
 
 # C extensions
 *.so
-
+*.json
+**/test.py
 # Distribution / packaging
 .Python
 build/

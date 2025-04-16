@@ -7,9 +7,12 @@ def arr_sep_by_month(metrics: list[dict], req_arr: dict[list])->None:
 	"""get the post by post json, format the date string to datetime format and append on the 
 	specific requisitions on a array with the key of the number of the related month."""
 	for post in metrics:
-		date = datetime.strptime(post['date_created'][0:10], "%Y-%m-%d")
+		try:
+			date = datetime.strptime(post['date_created'][0:10], "%Y-%m-%d")
 		# Essa linha transforma uma string de data num elemento datetime.
+		except: continue
 		# post['date_created'] = date
+
 		month = date.month
 		req_arr.get(month).append(post)
 
