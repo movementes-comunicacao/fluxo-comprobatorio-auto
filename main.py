@@ -7,13 +7,15 @@ from datetime import datetime, timedelta
 import pandas as pd
 from components.Files_Handler.module.file_handler import Files_Handling
 import sys
+from srcs.utils import merge_posts
 
 env_variable_prefix = "nit"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
-	ttk = None if TIKTOK_ACC == None else Tiktok_Automation(TIKTOK_ACC)
+	
+	ttk = None if TIKTOK_ACC == None else TikTok.Tiktok_Automation(TIKTOK_ACC)
 	ttk.start_browser()
-	ytb = None if YOUTUBE_ACC == None else Youtube_Automation(YOUTUBE_ACC, ttk.browser, ttk.page)
+	ytb = None if YOUTUBE_ACC == None else Youtube.Youtube_Automation(YOUTUBE_ACC, ttk.browser, ttk.page)
 	dateOpt = sys.argv
 	print("DATE OPT LEN IS:", len(dateOpt))
 	dt_man = Date_Utils()
