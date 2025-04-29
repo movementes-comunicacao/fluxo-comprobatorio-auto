@@ -1,7 +1,6 @@
 from components.Sheets_Manager.module.sheets_manager import Sheets_Manager
 from components.Thread_Manager.module.scraping_threads import Threads_Manager
 from components.Meta_Manager.module.meta_class import Social_Manager
-from components.PlayWrightAuto.SocialMedia.TikTok import Tiktok_Automation
 from components.Twitter_Manager.module.scraping_twt import Twitter_Manager, BeautifulSoup
 from components.PlayWrightAuto.SocialMedia import TikTok, Threads, Twitter, Youtube
 # from components.PlayWrightAuto.SocialMedia.Twitter import Twitter_Automation
@@ -33,23 +32,20 @@ def get_insta_essencial(social_man: Social_Manager, dates: list)->list:
 		)
 	return result
 
-def get_tiktok_essencial(dates: list)->list:
-	tiktok_man = TikTok.Tiktok_Automation(ACCOUNT)
-	model = tiktok_man.standard_procedure(dates)
+def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->list:
+	models = tiktok_man.standard_procedure(dates)
 	result = []
-	for feed in model:
-		for link, post in feed.items():
-			result.append(
-				{
-				'description': post['desc'],
-				'views': post['views'],
-				'link': link,
-				}
-			)
+	for link, post in models.items():
+		result.append(
+			{
+			'description': post['desc'],
+			'views': post['views'],
+			'link': link,
+			}
+		)
 	return result
 
-def get_threads(dates: list)->list:
-	threads_man = Threads.Threads_Automation(ACCOUNT)
+def get_threads(threads_man: Threads.Threads_Automation, dates: list)->list:
 	model = threads_man.standard_procedure(dates)
 	result = []
 	for feed in model:
@@ -63,8 +59,7 @@ def get_threads(dates: list)->list:
 			)
 	return result
 
-def get_twitter_essencial(dates: list)->list:
-	twitter_man = Twitter.Twitter_Automation(ACCOUNT)
+def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)->list:
 	model = twitter_man.standard_procedure(dates)
 	result = []
 	for feed in model:
@@ -77,22 +72,6 @@ def get_twitter_essencial(dates: list)->list:
 				}
 			)
 	return result
-
-def get_youtube_essencial(dates: list)->list:
-	youtube_man = Youtube.Youtube_Automation(ACCOUNT)
-	model = youtube_man.standard_procedure(dates)
-	result = []
-	for feed in model:
-		for link, post in feed.items():
-			result.append(
-				{
-				'date_created': post['date'],
-				'title': post['title'],
-				'link': link,
-				}
-			)
-	return result
-
 
 def getTwitterAndThreads(dates: list)->list:
 	result = []
@@ -137,7 +116,7 @@ def get_threads_essencial(threads_man: Threads_Manager | None, dates: list)->lis
 			)
 	return result
 
-def get_youtube_essencial(youtb: Youtube_Automation | None, dates:list):
+def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
 	result = []
 	if youtb != None:
 		model = youtb.standard_procedure(dates)
