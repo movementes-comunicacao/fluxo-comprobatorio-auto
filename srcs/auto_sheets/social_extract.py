@@ -38,14 +38,14 @@ def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->lis
 	for link, post in models.items():
 		result.append(
 			{
-			'description': post['desc'],
+			'description': post['description'],
 			'views': post['views'],
 			'link': link,
 			}
 		)
 	return result
 
-def get_threads(threads_man: Threads.Threads_Automation, dates: list)->list:
+def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)->list:
 	model = threads_man.standard_procedure(dates)
 	result = []
 	for feed in model:
@@ -100,20 +100,6 @@ def getTwitterAndThreads(dates: list)->list:
 				}
 			)
 		threads_man.driver.quit()
-	return result
-	
-def get_threads_essencial(threads_man: Threads_Manager | None, dates: list)->list:
-	result = []
-	if threads_man != None:
-		model = threads_man.standard_procedure(dates)
-		for post in model:
-			result.append(
-				{
-				'date_created': post['extra_1'],
-				'description': post['texts'],
-				'link_url': post['effective_link']
-				}
-			)
 	return result
 
 def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
