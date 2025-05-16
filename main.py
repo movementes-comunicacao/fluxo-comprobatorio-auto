@@ -41,13 +41,16 @@ if __name__ == "__main__":
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
 			get_threads_essencial(threads, [since, until]),
+			get_twitter_essencial(twt, [since, until]),
+			get_youtube_essencial(ytb, [since, until]),
+			get_tiktok_essencial(ttk, [since, until]),
 			get_insta_essencial(social_man, [since, until]),
 			get_face_essencial(social_man, [since, until]),
-			get_twitter_essencial(twt, [since, until]),
-			get_tiktok_essencial(ttk, [since, until]),
-			get_youtube_essencial(ytb, [since, until]),
 			)
-		pd.DataFrame(result).to_excel("Relatorio.xlsx")
+		try:
+			pd.DataFrame(result).to_excel("Relatorio.xlsx")
+		except Exception as e:
+			print("Error writing to Excel:", e)
 		if SHEET_URL != "None" and len(dateOpt) == 1:
 			input_on_sheets(sh_man, result, period, dt_man)
 		
