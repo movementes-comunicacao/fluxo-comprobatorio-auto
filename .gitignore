@@ -179,3 +179,5 @@ pyrightconfig.json
 
 *.xlsx
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+**/browser_data/
