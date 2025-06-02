@@ -8,71 +8,91 @@ from utils.read_env import *
 
 def get_face_essencial(social_man: Social_Manager, dates: list)->list:        
 	result =[]
-	model = social_man.face_description(dates)
-	for post in model[0]:
-		result.append(
-			{
-			 'date_created': post['created_time'],
-			 'description': post['message'],
-			 'link_url': post['permalink_url']
-			 }
-		)
+	if social_man != None:
+		model = social_man.face_description(dates)
+		for post in model[0]:
+			result.append(
+				{
+				'date_created': post['created_time'],
+				'description': post['message'],
+				'link_url': post['permalink_url']
+				}
+			)
 	return result
 
 def get_insta_essencial(social_man: Social_Manager, dates: list)->list:
 	result =[]
-	model = social_man.insta_description(dates)
-	for post in model[0]:
-		result.append(
-			{
-			 'date_created': post['timestamp'],
-			 'description': post.get('caption'),
-			 'link_url': post['permalink']
-			}
-		)
+	if social_man != None:
+		model = social_man.insta_description(dates)
+		for post in model[0]:
+			result.append(
+				{
+				'date_created': post['timestamp'],
+				'description': post.get('caption'),
+				'link_url': post['permalink']
+				}
+			)
 	return result
 
 def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->list:
-	models = tiktok_man.standard_procedure(dates)
 	result = []
-	for link, post in models.items():
-		result.append(
-			{
-			'description': post['description'],
-			'views': post['views'],
-			'link': link,
-			}
-		)
+	if tiktok_man != None:
+		models = tiktok_man.standard_procedure(dates)
+		for link, post in models.items():
+			result.append(
+				{
+				"date_created": post['date_created'],
+				'description': post['description'],
+				'link_url': link,
+				'views': post['views'],
+				}
+			)
 	return result
 
 def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)->list:
-	model = threads_man.standard_procedure(dates)
 	result = []
-	for feed in model:
-		for link, post in feed.items():
+	if threads_man != None:
+		model = threads_man.standard_procedure(dates)
+		for link, post in model.items():
 			result.append(
 				{
 				'date_created': post['Data'],
 				'description': post['Descrição'],
-				'link': link,
+				'link_url': link,
 				}
 			)
 	return result
 
 def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)->list:
-	model = twitter_man.standard_procedure(dates)
 	result = []
-	for feed in model:
-		for link, post in feed.items():
+	if twitter_man != None:
+		model = twitter_man.standard_procedure(dates)
+		for link, post in model.items():
 			result.append(
 				{
 				'date_created': post['Data'],
 				'description': post['Descrição'],
-				'link': link,
+				'link_url': link,
 				}
 			)
 	return result
 
+
+def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
+	result = []
+	if youtb != None:
+		model = youtb.standard_procedure(dates)
+		for link, data in model.items():
+			result.append(
+				{
+				'date_created': data["date"],
+				'description': data["title"],
+				'link_url': link
+				}
+			)
+	return result
+
+# DEPRECATED
 def getTwitterAndThreads(dates: list)->list:
 	result = []
 	if (TWITTER_ACC != None):
@@ -82,9 +102,9 @@ def getTwitterAndThreads(dates: list)->list:
 			result.append(
 				{
 				'date_created': post['extra_1'],
-				'metrics': post['extra_2'],
 				'description': post['texts'],
-				'link_url': post['effective_link']
+				'link_url': post['effective_link'],
+				'metrics': post['extra_2'],
 				}
 			)
 		twitter_man.driver.quit()
@@ -101,17 +121,3 @@ def getTwitterAndThreads(dates: list)->list:
 			)
 		threads_man.driver.quit()
 	return result
-
-def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
-	result = []
-	if youtb != None:
-		model = youtb.standard_procedure(dates)
-		for link, data in model.items():
-			result.append(
-				{
-				'date_created': data["date"],
-				'description': data["title"],
-				'link_url': link
-				}
-			)
-		return result
