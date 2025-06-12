@@ -9,7 +9,7 @@ from components.Files_Handler.module.file_handler import Files_Handling
 import sys
 from srcs.utils import merge_posts
 
-env_variable_prefix = "nit"
+env_variable_prefix = "marica"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
 	
@@ -40,9 +40,9 @@ if __name__ == "__main__":
 		print("nova solicitação!")
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
-			get_threads_essencial(threads, [since, until]),
 			get_insta_essencial(social_man, [since, until]),
 			get_face_essencial(social_man, [since, until]),
+			get_threads_essencial(threads, [since, until]),
 			get_twitter_essencial(twt, [since, until]),
 			get_tiktok_essencial(ttk, [since, until]),
 			get_youtube_essencial(ytb, [since, until]),

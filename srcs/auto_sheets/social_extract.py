@@ -33,44 +33,47 @@ def get_insta_essencial(social_man: Social_Manager, dates: list)->list:
 	return result
 
 def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->list:
-	models = tiktok_man.standard_procedure(dates)
 	result = []
-	for link, post in models.items():
-		result.append(
-			{
-			'description': post['description'],
-			'views': post['views'],
-			'link': link,
-			}
-		)
+	if tiktok_man != None:
+		models = tiktok_man.standard_procedure(dates)
+		for link, post in models.items():
+			result.append(
+				{
+				'description': post['description'],
+				'views': post['views'],
+				'link': link,
+				}
+			)
 	return result
 
 def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)->list:
-	model = threads_man.standard_procedure(dates)
 	result = []
-	for feed in model:
-		for link, post in feed.items():
-			result.append(
-				{
-				'date_created': post['Data'],
-				'description': post['Descrição'],
-				'link': link,
-				}
-			)
+	if threads_man != None:
+		model = threads_man.standard_procedure(dates)
+		for feed in model:
+			for link, post in feed.items():
+				result.append(
+					{
+					'date_created': post['Data'],
+					'description': post['Descrição'],
+					'link': link,
+					}
+				)
 	return result
 
 def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)->list:
-	model = twitter_man.standard_procedure(dates)
 	result = []
-	for feed in model:
-		for link, post in feed.items():
-			result.append(
-				{
-				'date_created': post['Data'],
-				'description': post['Descrição'],
-				'link': link,
-				}
-			)
+	if twitter_man != None:
+		model = twitter_man.standard_procedure(dates)
+		for feed in model:
+			for link, post in feed.items():
+				result.append(
+					{
+					'date_created': post['Data'],
+					'description': post['Descrição'],
+					'link': link,
+					}
+				)
 	return result
 
 def getTwitterAndThreads(dates: list)->list:
@@ -114,4 +117,4 @@ def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
 				'link_url': link
 				}
 			)
-		return result
+	return result
