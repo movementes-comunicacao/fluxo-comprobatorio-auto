@@ -17,6 +17,7 @@ if __name__ == "__main__":
 	ttk.start_browser()
 
 	ytb = None if YOUTUBE_ACC == None else Youtube.Youtube_Automation(YOUTUBE_ACC, ttk.playwright, browser=ttk.browser, page=ttk.page)
+
 	threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 	twt = None if TWITTER_ACC == None else Twitter.Twitter_Automation(TWITTER_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 
@@ -48,7 +49,10 @@ if __name__ == "__main__":
 			get_insta_essencial(social_man, [since, until]),
 			get_face_essencial(social_man, [since, until]),
 			)
-		pd.DataFrame(result).to_excel("Relatorio.xlsx")
+		try:
+			pd.DataFrame(result).to_excel("Relatorio.xlsx")
+		except Exception as e:
+			print("Error writing to Excel:", e)
 		if SHEET_URL != "None" and len(dateOpt) == 1:
 			input_on_sheets(sh_man, result, period, dt_man)
 		

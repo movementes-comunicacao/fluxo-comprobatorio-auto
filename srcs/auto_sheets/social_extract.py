@@ -35,22 +35,21 @@ def get_insta_essencial(social_man: Social_Manager, dates: list)->list:
 	return result
 
 def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->list:
-	try:
+	result = []
+	if tiktok_man != None:
 		models = tiktok_man.standard_procedure(dates)
-		if tiktok_man != None:	
-			result = []
-			for link, post in models.items():
-				result.append(
-					{
-					'description': post['description'],
-					'views': post['views'],
-					'link': link,
-					"date_created": post["date_created"]
-					}
-				)
-		return result
-	except:
-		return []
+		for link, post in models.items():
+			result.append(
+				{
+				"date_created": post['date_created'],
+				'description': post['description'],
+				'link_url': link,
+				'views': post['views'],
+				}
+			)
+	return result
+
+
 def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)->list:
 	try:
 		result = []
@@ -68,6 +67,7 @@ def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)-
 		return result
 	except:
 		return []
+	
 def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)->list:
 	try:
 		result = []
@@ -85,6 +85,9 @@ def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)
 			return result
 	except:
 		return []
+
+# DEPRECATED
+
 def getTwitterAndThreads(dates: list)->list:
 	result = []
 	if (TWITTER_ACC != None):
@@ -94,9 +97,9 @@ def getTwitterAndThreads(dates: list)->list:
 			result.append(
 				{
 				'date_created': post['extra_1'],
-				'metrics': post['extra_2'],
 				'description': post['texts'],
-				'link_url': post['effective_link']
+				'link_url': post['effective_link'],
+				'metrics': post['extra_2'],
 				}
 			)
 		twitter_man.driver.quit()
