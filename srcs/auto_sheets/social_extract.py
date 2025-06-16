@@ -8,71 +8,83 @@ from utils.read_env import *
 
 def get_face_essencial(social_man: Social_Manager, dates: list)->list:        
 	result =[]
-	model = social_man.face_description(dates)
-	for post in model[0]:
-		result.append(
-			{
-			 'date_created': post['created_time'],
-			 'description': post['message'],
-			 'link_url': post['permalink_url']
-			 }
-		)
+	if social_man != None:
+		model = social_man.face_description(dates)
+		for post in model[0]:
+			result.append(
+				{
+				'date_created': post['created_time'],
+				'description': post['message'],
+				'link_url': post['permalink_url']
+				}
+			)
 	return result
 
 def get_insta_essencial(social_man: Social_Manager, dates: list)->list:
 	result =[]
-	model = social_man.insta_description(dates)
-	for post in model[0]:
-		result.append(
-			{
-			 'date_created': post['timestamp'],
-			 'description': post.get('caption'),
-			 'link_url': post['permalink']
-			}
-		)
+	if social_man != None:
+		model = social_man.insta_description(dates)
+		for post in model[0]:
+			result.append(
+				{
+				'date_created': post['timestamp'],
+				'description': post.get('caption'),
+				'link_url': post['permalink']
+				}
+			)
 	return result
 
 def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->list:
-	models = tiktok_man.standard_procedure(dates)
-	result = []
-	for link, post in models.items():
-		result.append(
-			{
-			'description': post['description'],
-			'views': post['views'],
-			'link': link,
-			}
-		)
-	return result
-
+	try:
+		models = tiktok_man.standard_procedure(dates)
+		if tiktok_man != None:	
+			result = []
+			for link, post in models.items():
+				result.append(
+					{
+					'description': post['description'],
+					'views': post['views'],
+					'link': link,
+					"date_created": post["date_created"]
+					}
+				)
+		return result
+	except:
+		return []
 def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)->list:
-	model = threads_man.standard_procedure(dates)
-	result = []
-	for feed in model:
-		for link, post in feed.items():
-			result.append(
-				{
-				'date_created': post['Data'],
-				'description': post['Descrição'],
-				'link': link,
-				}
-			)
-	return result
-
+	try:
+		result = []
+		if threads_man != None:
+			model = threads_man.standard_procedure(dates)
+			for feed in model:
+				for link, post in feed.items():
+					result.append(
+						{
+						'date_created': post['Data'],
+						'description': post['Descrição'],
+						'link_url': link,
+						}
+					)
+		return result
+	except:
+		return []
 def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)->list:
-	model = twitter_man.standard_procedure(dates)
-	result = []
-	for feed in model:
-		for link, post in feed.items():
-			result.append(
-				{
-				'date_created': post['Data'],
-				'description': post['Descrição'],
-				'link': link,
-				}
-			)
-	return result
-
+	try:
+		result = []
+		if twitter_man != None:
+			model = twitter_man.standard_procedure(dates)
+			for feed in model:
+				for link, post in feed.items():
+					result.append(
+						{
+						'date_created': post['Data'],
+						'description': post['Descrição'],
+						'link_url': link,
+						}
+					)
+			return result
+	except:
+		return []
 def getTwitterAndThreads(dates: list)->list:
 	result = []
 	if (TWITTER_ACC != None):
@@ -103,15 +115,18 @@ def getTwitterAndThreads(dates: list)->list:
 	return result
 
 def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
-	result = []
-	if youtb != None:
-		model = youtb.standard_procedure(dates)
-		for link, data in model.items():
-			result.append(
-				{
-				'date_created': data["date"],
-				'description': data["title"],
-				'link_url': link
-				}
-			)
-		return result
+	try: 
+		result = []
+		if youtb != None:
+			model = youtb.standard_procedure(dates)
+			for link, data in model.items():
+				result.append(
+					{
+					'date_created': data["date"],
+					'description': data["title"],
+					'link_url': link
+					}
+				)
+			return result
+	except:
+		return []

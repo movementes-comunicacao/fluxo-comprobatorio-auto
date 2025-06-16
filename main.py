@@ -15,9 +15,10 @@ if __name__ == "__main__":
 	
 	ttk = None if TIKTOK_ACC == None else TikTok.Tiktok_Automation(TIKTOK_ACC)
 	ttk.start_browser()
+
 	ytb = None if YOUTUBE_ACC == None else Youtube.Youtube_Automation(YOUTUBE_ACC, ttk.playwright, browser=ttk.browser, page=ttk.page)
-	twt = None if TWITTER_ACC == None else Twitter.Twitter_Automation(TWITTER_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 	threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
+	twt = None if TWITTER_ACC == None else Twitter.Twitter_Automation(TWITTER_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 
 	dateOpt = sys.argv
 	print("DATE OPT LEN IS:", len(dateOpt))
@@ -40,12 +41,12 @@ if __name__ == "__main__":
 		print("nova solicitação!")
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
+			get_youtube_essencial(ytb, [since, until]),
+			get_tiktok_essencial(ttk, [since, until]),
+			get_twitter_essencial(twt, [since, until]),
 			get_threads_essencial(threads, [since, until]),
 			get_insta_essencial(social_man, [since, until]),
 			get_face_essencial(social_man, [since, until]),
-			get_twitter_essencial(twt, [since, until]),
-			get_tiktok_essencial(ttk, [since, until]),
-			get_youtube_essencial(ytb, [since, until]),
 			)
 		pd.DataFrame(result).to_excel("Relatorio.xlsx")
 		if SHEET_URL != "None" and len(dateOpt) == 1:
