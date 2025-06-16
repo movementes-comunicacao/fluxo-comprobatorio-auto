@@ -9,15 +9,15 @@ from components.Files_Handler.module.file_handler import Files_Handling
 import sys
 from srcs.utils import merge_posts
 
-env_variable_prefix = "nit"
+env_variable_prefix = "marica"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
 	
 	ttk = None if TIKTOK_ACC == None else TikTok.Tiktok_Automation(TIKTOK_ACC)
-	# ttk.start_browser()
-	# ytb = None if YOUTUBE_ACC == None else Youtube.Youtube_Automation(YOUTUBE_ACC, ttk.playwright, browser=ttk.browser, page=ttk.page)
-	# twt = None if TWITTER_ACC == None else Twitter.Twitter_Automation(TWITTER_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
-	# threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
+	ttk.start_browser()
+	ytb = None if YOUTUBE_ACC == None else Youtube.Youtube_Automation(YOUTUBE_ACC, ttk.playwright, browser=ttk.browser, page=ttk.page)
+	twt = None if TWITTER_ACC == None else Twitter.Twitter_Automation(TWITTER_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
+	threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 
 	dateOpt = sys.argv
 	print("DATE OPT LEN IS:", len(dateOpt))
@@ -40,17 +40,14 @@ if __name__ == "__main__":
 		print("nova solicitação!")
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
+			# get_tiktok_essencial(ttk, [since, until])
+			get_twitter_essencial(twt, [since, until]),
 			# get_threads_essencial(threads, [since, until]),
-			# get_twitter_essencial(twt, [since, until]),
-			# get_youtube_essencial(ytb, [since, until]),
-			get_tiktok_essencial(ttk, [since, until]),
 			# get_insta_essencial(social_man, [since, until]),
 			# get_face_essencial(social_man, [since, until]),
+			# get_youtube_essencial(ytb, [since, until]),
 			)
-		try:
-			pd.DataFrame(result).to_excel("Relatorio.xlsx")
-		except Exception as e:
-			print("Error writing to Excel:", e)
+		pd.DataFrame(result).to_excel("Relatorio - Twitter.xlsx")
 		if SHEET_URL != "None" and len(dateOpt) == 1:
 			input_on_sheets(sh_man, result, period, dt_man)
 		

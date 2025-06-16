@@ -49,50 +49,45 @@ def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->lis
 			)
 	return result
 
+
 def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)->list:
-	result = []
-	if threads_man != None:
-		model = threads_man.standard_procedure(dates)
-		for link, post in model.items():
-			result.append(
-				{
-				'date_created': post['Data'],
-				'description': post['Descrição'],
-				'link_url': link,
-				}
-			)
-	return result
-
+	try:
+		result = []
+		if threads_man != None:
+			model = threads_man.standard_procedure(dates)
+			for feed in model:
+				for link, post in feed.items():
+					result.append(
+						{
+						'date_created': post['Data'],
+						'description': post['Descrição'],
+						'link_url': link,
+						}
+					)
+		return result
+	except:
+		return []
+	
 def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)->list:
-	result = []
-	if twitter_man != None:
-		model = twitter_man.standard_procedure(dates)
-		for link, post in model.items():
-			result.append(
-				{
-				'date_created': post['Data'],
-				'description': post['Descrição'],
-				'link_url': link,
-				}
-			)
-	return result
-
-
-def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
-	result = []
-	if youtb != None:
-		model = youtb.standard_procedure(dates)
-		for link, data in model.items():
-			result.append(
-				{
-				'date_created': data["date"],
-				'description': data["title"],
-				'link_url': link
-				}
-			)
-	return result
+	try:
+		result = []
+		if twitter_man != None:
+			model = twitter_man.standard_procedure(dates)
+			for feed in model:
+				for link, post in feed.items():
+					result.append(
+						{
+						'date_created': post['Data'],
+						'description': post['Descrição'],
+						'link_url': link,
+						}
+					)
+			return result
+	except:
+		return []
 
 # DEPRECATED
+
 def getTwitterAndThreads(dates: list)->list:
 	result = []
 	if (TWITTER_ACC != None):
@@ -121,3 +116,20 @@ def getTwitterAndThreads(dates: list)->list:
 			)
 		threads_man.driver.quit()
 	return result
+
+def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
+	try: 
+		result = []
+		if youtb != None:
+			model = youtb.standard_procedure(dates)
+			for link, data in model.items():
+				result.append(
+					{
+					'date_created': data["date"],
+					'description': data["title"],
+					'link_url': link
+					}
+				)
+			return result
+	except:
+		return []
