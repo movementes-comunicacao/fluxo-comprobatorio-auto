@@ -41,10 +41,14 @@ def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->lis
 		for link, post in models.items():
 			result.append(
 				{
-				"date_created": post['date_created'],
-				'description': post['description'],
-				'link_url': link,
-				'views': post['views'],
+				'Data': post['date_created'],
+				'Descrição': post['description'],
+				'Link': link,
+				'Curtidas': post['digg_count'],
+				'Comentários': post['comment_count'],
+				'Visualizações': post['play_count'],
+				'Compartilhamentos': post['share_count'],
+				'Repostadas': post['repost_count']
 				}
 			)
 	return result
@@ -77,9 +81,14 @@ def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)
 				for link, post in feed.items():
 					result.append(
 						{
-						'date_created': post['Data'],
-						'description': post['Descrição'],
-						'link_url': link,
+						'Data': post['Data'],
+						'Descrição': post['Descrição'],
+						'Link': link,
+						'Curtidas': post['Curtidas'],
+						'Comentários': post['Comentários'],
+						'Visualizações': post['Visualizações'],
+						'Compartilhamentos': post['Compartilhamentos'],
+						'Repostados': post['Repostados']
 						}
 					)
 			return result
@@ -125,9 +134,12 @@ def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
 			for link, data in model.items():
 				result.append(
 					{
-					'date_created': data["date"],
-					'description': data["title"],
-					'link_url': link
+					'Data de Criação': data["date"],
+					'Descrição': data["title"],
+					'Link': link, 
+					"Curtidas": data["likes"],
+					"Comentários": data["comments"],
+					"Visualizações": data["views"]
 					}
 				)
 			return result

@@ -2,14 +2,13 @@
 from components.Sheets_Manager.module.sheets_manager import Sheets_Manager
 from srcs.auto_sheets.social_extract import *
 from srcs.auto_sheets.sheet_input import *
-from components.Thread_Manager.module.scraping_threads import Threads_Manager
 from datetime import datetime, timedelta
 import pandas as pd
 from components.Files_Handler.module.file_handler import Files_Handling
 import sys
 from srcs.utils import merge_posts
 
-env_variable_prefix = "marica"
+env_variable_prefix = ""
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
 	
@@ -41,15 +40,15 @@ if __name__ == "__main__":
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
 			# get_tiktok_essencial(ttk, [since, until])
-			get_twitter_essencial(twt, [since, until]),
-			# get_threads_essencial(threads, [since, until]),
+			# get_twitter_essencial(twt, [since, until]),
+			get_threads_essencial(threads, [since, until]),
 			# get_insta_essencial(social_man, [since, until]),
 			# get_face_essencial(social_man, [since, until]),
 			# get_youtube_essencial(ytb, [since, until]),
 			)
 		pd.DataFrame(result).to_excel("Relatorio - Twitter.xlsx")
-		if SHEET_URL != "None" and len(dateOpt) == 1:
-			input_on_sheets(sh_man, result, period, dt_man)
+		# if SHEET_URL != "None" and len(dateOpt) == 1:
+		# 	input_on_sheets(sh_man, result, period, dt_man)
 		
 		# Files_Handling("./data/").write_file(result, "data_result.json")
 		# ytb.close_browser()

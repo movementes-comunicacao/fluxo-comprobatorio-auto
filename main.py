@@ -9,7 +9,7 @@ from components.Files_Handler.module.file_handler import Files_Handling
 import sys
 from srcs.utils import merge_posts
 
-env_variable_prefix = "nit"
+env_variable_prefix = "marica"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
 	
@@ -53,8 +53,8 @@ if __name__ == "__main__":
 			pd.DataFrame(result).to_excel("Relatorio.xlsx")
 		except Exception as e:
 			print("Error writing to Excel:", e)
-		if SHEET_URL != "None" and len(dateOpt) == 1:
-			input_on_sheets(sh_man, result, period, dt_man)
+		# if SHEET_URL != "None" and len(dateOpt) == 1:
+		# 	input_on_sheets(sh_man, result, period, dt_man)
 		
 		# Files_Handling("./data/").write_file(result, "data_result.json")
 		# ytb.close_browser()
