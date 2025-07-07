@@ -48,7 +48,7 @@ def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->lis
 				'Comentários': post['comment_count'],
 				'Visualizações': post['play_count'],
 				'Compartilhamentos': post['share_count'],
-				'Repostadas': post['repost_count']
+				'Repostados': post['repost_count']
 				}
 			)
 	return result
@@ -66,6 +66,11 @@ def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)-
 						'date_created': post['Data'],
 						'description': post['Descrição'],
 						'link_url': link,
+						'Curtidas': post['Curtidas'],
+						'Comentários': post['Comentários'],
+						'Visualizações': post['Visualizações'],
+						'Compartilhamentos': post['Compartilhamentos'],
+						'Repostados': post['Repostados']
 						}
 					)
 		return result
@@ -96,35 +101,34 @@ def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)
 		return []
 
 # DEPRECATED
-
-def getTwitterAndThreads(dates: list)->list:
-	result = []
-	if (TWITTER_ACC != None):
-		twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
-		model = twitter_man.standard_procedure(dates)
-		for post in model:
-			result.append(
-				{
-				'date_created': post['extra_1'],
-				'description': post['texts'],
-				'link_url': post['effective_link'],
-				'metrics': post['extra_2'],
-				}
-			)
-		twitter_man.driver.quit()
-	if (THREADS_ACC != None):
-		threads_man = Threads_Manager(THREADS_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
-		model = threads_man.standard_procedure(dates)
-		for post in model:
-			result.append(
-				{
-				'date_created': post['extra_1'],
-				'description': post['texts'],
-				'link_url': post['effective_link']
-				}
-			)
-		threads_man.driver.quit()
-	return result
+# def getTwitterAndThreads(dates: list)->list:
+# 	result = []
+# 	if (TWITTER_ACC != None):
+# 		twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
+# 		model = twitter_man.standard_procedure(dates)
+# 		for post in model:
+# 			result.append(
+# 				{
+# 				'date_created': post['extra_1'],
+# 				'description': post['texts'],
+# 				'link_url': post['effective_link'],
+# 				'metrics': post['extra_2'],
+# 				}
+# 			)
+# 		twitter_man.driver.quit()
+# 	if (THREADS_ACC != None):
+# 		threads_man = Threads_Manager(THREADS_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
+# 		model = threads_man.standard_procedure(dates)
+# 		for post in model:
+# 			result.append(
+# 				{
+# 				'date_created': post['extra_1'],
+# 				'description': post['texts'],
+# 				'link_url': post['effective_link']
+# 				}
+# 			)
+# 		threads_man.driver.quit()
+# 	return result
 
 def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
 	try: 

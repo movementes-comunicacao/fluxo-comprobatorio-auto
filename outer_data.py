@@ -8,7 +8,7 @@ from components.Files_Handler.module.file_handler import Files_Handling
 import sys
 from srcs.utils import merge_posts
 
-env_variable_prefix = ""
+env_variable_prefix = "marica"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
 	
