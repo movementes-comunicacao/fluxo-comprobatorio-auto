@@ -38,17 +38,20 @@ def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->lis
 	result = []
 	if tiktok_man != None:
 		models = tiktok_man.standard_procedure(dates)
+		print(" Passei aqui com o TikTok")
 		for link, post in models.items():
+			print("Link:", link)
+			print("Post:", post)
 			result.append(
 				{
-				'Data': post['date_created'],
-				'Descrição': post['description'],
-				'Link': link,
-				'Curtidas': post['digg_count'],
-				'Comentários': post['comment_count'],
-				'Visualizações': post['play_count'],
-				'Compartilhamentos': post['share_count'],
-				'Repostados': post['repost_count']
+					'Data': post.get('date_created'),
+					'description': post.get('description'),
+					'Link': link,
+					'Curtidas': post.get('digg_count'),
+					'Comentários': post.get('comment_count'),
+					'Visualizações': post.get('play_count'),
+					'Compartilhamentos': post.get('share_count'),
+					'Repostados': post.get('repost_count')
 				}
 			)
 	return result
@@ -87,7 +90,7 @@ def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)
 					result.append(
 						{
 						'Data': post['Data'],
-						'Descrição': post['Descrição'],
+						'description': post['Descrição'],
 						'Link': link,
 						'Curtidas': post['Curtidas'],
 						'Comentários': post['Comentários'],
@@ -139,7 +142,7 @@ def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
 				result.append(
 					{
 					'Data de Criação': data["date"],
-					'Descrição': data["title"],
+					'description': data["title"],
 					'Link': link, 
 					"Curtidas": data["likes"],
 					"Comentários": data["comments"],

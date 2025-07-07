@@ -13,6 +13,8 @@ THREADS_ACC = env_variables.get("THREADS_ACC")
 YOUTUBE_ACC = env_variables.get("YOUTUBE_ACC")
 TIKTOK_ACC = env_variables.get("TIKTOK_ACC")
 
+
+# Locators for Threads
 column_body_locator = '//div[@aria-label="Corpo da coluna"]'
 feed_container = '//div[@class="x1a2a7pz x1n2onr6"]'
 post_items = '//div[@class="xrvj5dj xd0jker x1evr45z"]'
