@@ -23,5 +23,8 @@ def merge_posts(*args):
                         continue
                 result_arr.extend(obj)
         for value in result_arr:
+                if value.get("description") is None:
+                        value["description"] = ""
+                        continue
                 value["description"] = " ".join(remove_emojis(value["description"]).split())
         return result_arr

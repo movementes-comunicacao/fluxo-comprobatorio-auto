@@ -54,6 +54,7 @@ def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)-
 	try:
 		result = []
 		if threads_man != None:
+			print("Entered")
 			model = threads_man.standard_procedure(dates)
 			for feed in model:
 				for link, post in feed.items():
