@@ -44,11 +44,12 @@ if __name__ == "__main__":
 		result = merge_posts(
 			get_youtube_essencial(ytb, [since, until]),
 			get_tiktok_essencial(ttk, [since, until]),
-			get_twitter_essencial(twt, [since, until]),
 			get_threads_essencial(threads, [since, until]),
+			get_twitter_essencial(twt, [since, until]),
 			get_insta_essencial(social_man, [since, until]),
 			get_face_essencial(social_man, [since, until]),
 			)
+		print("RESULT IS: ", result)
 		try:
 			pd.DataFrame(result).to_excel("Relatorio.xlsx")
 		except Exception as e:

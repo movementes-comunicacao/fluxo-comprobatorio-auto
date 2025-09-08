@@ -43,8 +43,7 @@ def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->lis
 				{
 				"date_created": post['date_created'],
 				'description': post['description'],
-				'link_url': link,
-				'views': post['views'],
+				'link_url': link	
 				}
 			)
 	return result
