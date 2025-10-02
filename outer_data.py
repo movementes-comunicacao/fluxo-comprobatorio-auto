@@ -8,6 +8,10 @@ import pandas as pd
 from components.Files_Handler.module.file_handler import Files_Handling
 import sys
 from srcs.utils import merge_posts
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger(__name__)
 
 env_variable_prefix = "nit"
 if __name__ == "__main__":
@@ -20,27 +24,30 @@ if __name__ == "__main__":
 	threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 
 	dateOpt = sys.argv
-	print("DATE OPT LEN IS:", len(dateOpt))
+	logger.info(f"DATE OPT LEN IS: {len(dateOpt)}")
 	dt_man = Date_Utils()
 	dates = dt_man.return_period()
 	since = dates["start_date"]["value"]
 	until = dates["final_date"]["value"]
 
-	print("since is: ", since, "and until is: ", until)
+	logger.info(f"since is: {since} and until is: {until}")
 	social_man.date_optional = [since, until]
 	period = social_man.return_period()
 	if since < until:
-		print("nova solicitação!")
+		logger.info("nova solicitação!")
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
 			# get_tiktok_essencial(ttk, [since, until])
-			# get_twitter_essencial(twt, [since, until]),
-			get_threads_essencial(threads, [since, until]),
+			get_twitter_essencial(twt, [since, until]),
+			# get_threads_essencial(threads, [since, until]),
 			# get_insta_essencial(social_man, [since, until]),
 			# get_face_essencial(social_man, [since, until]),
 			# get_youtube_essencial(ytb, [since, until]),
 			)
-		pd.DataFrame(result).to_excel("Relatorio - Twitter.xlsx")
+		try:
+			pd.DataFrame(result).to_excel("Relatorio Twitter.xlsx")
+		except Exception as e:
+			logger.error(f"Error writing to Excel: {e}")
 
 		
 		# Files_Handling("./data/").write_file(result, "data_result.json")

@@ -2,6 +2,10 @@ from gspread.worksheet import Worksheet
 from components.Sheets_Manager.module.sheets_manager import Sheets_Manager
 from datetime import datetime
 from components.Date_Utils.module.date_time_utils import Date_Utils
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger(__name__)
 
 def arr_sep_by_month(metrics: list[dict], req_arr: dict[list])->None:
 	"""get the post by post json, format the date string to datetime format and append on the 
@@ -29,7 +33,7 @@ def access_or_create_sheet(sh_man: Sheets_Manager, sheet_name=None) -> Worksheet
 	if sheet_name in list_sheets:
 		return sh_man.access_sheet(sheet_name)
 	else:
-		print(f"Guia {sheet_name} não localizada, necessita de um processo individual de criação.")
+		logger.warning(f"Guia {sheet_name} não localizada, necessita de um processo individual de criação.")
 		return None
 
 
@@ -38,7 +42,7 @@ def input_on_sheets(sh_man: Sheets_Manager, metrics: list[dict], months:dict, da
 	del metrics
 	for month_num, arr in result_arr.items():
 		sheet_name = date_man.months["portuguese"].get(month_num).capitalize()[0:3]
-		print("sheet name é ", sheet_name)
+		logger.info("sheet name é ", sheet_name)
 		sheet_obj = access_or_create_sheet(sh_man, sheet_name)
 		if sheet_obj == None:
 			continue

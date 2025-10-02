@@ -14,4 +14,3 @@ def create_month_folder(driver_m: Drive_Manager, month_fd_url:str):
 
 # drive_m = Drive_Manager(CREDS_PATH + "token_pickle/token.pickle", CREDS_PATH + "oauth_cred.json")
 # sheet_m = Sheets_Manager("https://docs.google.com/spreadsheets/d/19cG6ldny58xmZIAQ1uQmICMisy7m0gnpeUiC11L2jO0/", SERVICE_ACC, False)
-print(env_variables)
