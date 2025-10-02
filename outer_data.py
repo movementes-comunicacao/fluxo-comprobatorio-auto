@@ -22,16 +22,9 @@ if __name__ == "__main__":
 	dateOpt = sys.argv
 	print("DATE OPT LEN IS:", len(dateOpt))
 	dt_man = Date_Utils()
-	if SHEET_URL == "None" or len(dateOpt) > 1 and dateOpt[-1] == "dtchoose":
-		dates = dt_man.return_period()
-		since = dates["start_date"]["value"]
-		until = dates["final_date"]["value"]
-	else:
-		sh_man = Sheets_Manager(SHEET_URL, SERVICE_ACC)
-		sh_config = sh_man.access_sheet('config')
-		last_dt = datetime.strptime(sh_config.get("F15")[0][0], "%d/%m/%Y %H:%M:%S")
-		since = last_dt + timedelta(minutes=2)
-		until = datetime.now().replace(hour=23, minute=59, second=59, microsecond=0) - timedelta(days=1)
+	dates = dt_man.return_period()
+	since = dates["start_date"]["value"]
+	until = dates["final_date"]["value"]
 
 	print("since is: ", since, "and until is: ", until)
 	social_man.date_optional = [since, until]
@@ -41,15 +34,14 @@ if __name__ == "__main__":
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
 			# get_tiktok_essencial(ttk, [since, until])
-			get_twitter_essencial(twt, [since, until]),
-			# get_threads_essencial(threads, [since, until]),
+			# get_twitter_essencial(twt, [since, until]),
+			get_threads_essencial(threads, [since, until]),
 			# get_insta_essencial(social_man, [since, until]),
 			# get_face_essencial(social_man, [since, until]),
 			# get_youtube_essencial(ytb, [since, until]),
 			)
 		pd.DataFrame(result).to_excel("Relatorio - Twitter.xlsx")
-		if SHEET_URL != "None" and len(dateOpt) == 1:
-			input_on_sheets(sh_man, result, period, dt_man)
+
 		
 		# Files_Handling("./data/").write_file(result, "data_result.json")
 		# ytb.close_browser()
