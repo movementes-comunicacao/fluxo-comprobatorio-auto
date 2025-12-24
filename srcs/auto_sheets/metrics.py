@@ -10,12 +10,12 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
-def get_pd_metrics(twitter_man: Twitter_Manager, since, until):
-	if since < until:
-		logger.info("nova solicitação!")
-		result = get_twitter_essencial(twitter_man, [since, until])
-		normalized = pd.json_normalize(result)
-		normalized.to_excel("relatorio.xlsx")
+# def get_pd_metrics(twitter_man: Twitter_Manager, since, until):
+# 	if since < until:
+# 		logger.info("nova solicitação!")
+# 		result = get_twitter_essencial(twitter_man, [since, until])
+# 		normalized = pd.json_normalize(result)
+# 		normalized.to_excel("relatorio.xlsx")
 
 def get_face_metrics(social_man: Social_Manager, since, until):
 	if since < until:

@@ -1,54 +1,145 @@
-
-from components.Sheets_Manager.module.sheets_manager import Sheets_Manager
-from srcs.auto_sheets.social_extract import *
-from srcs.auto_sheets.sheet_input import *
-from components.Thread_Manager.module.scraping_threads import Threads_Manager
-from datetime import datetime, timedelta
+import asyncio
+from datetime import datetime
 import pandas as pd
-from components.Files_Handler.module.file_handler import Files_Handling
-import sys
-from srcs.utils import merge_posts
 import logging
+import sys
+from components.PlayWrightAuto_async.SocialMedia.Youtube import Youtube_Automation
+from components.PlayWrightAuto_async.SocialMedia.TikTok import Tiktok_Automation
+from components.PlayWrightAuto_async.SocialMedia.Threads import Threads_Automation
+from components.PlayWrightAuto_async.SocialMedia.Twitter import Twitter_Automation
+from components.PlayWrightAuto_async.essencial import logger
+from components.Meta_Manager.module.meta_class import Social_Manager
+from srcs.auto_sheets.social_extract import (
+    get_face_essencial,
+    get_insta_essencial,
+)
+from srcs.utils import merge_posts
+from utils.read_env import *
+from srcs.auto_sheets.sheet_input import Date_Utils
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
-logger = logging.getLogger(__name__)
 
-env_variable_prefix = "nit"
+
+async def run_youtube(dates):
+    if YOUTUBE_ACC is None:
+        return []
+    try:
+        yt = Youtube_Automation(
+            account=YOUTUBE_ACC,
+            browser_data_path="C:/profile_youtube",
+            chrome_executable_path=CHROME_EXECUTABLE_PATH,
+        )
+        return await yt.standard_procedure(dates)
+    except Exception as e:
+        logger.error(f"Erro YouTube: {e}")
+        return []
+
+
+async def run_tiktok(dates):
+    if TIKTOK_ACC is None:
+        return []
+    try:
+        tk = Tiktok_Automation(
+            account=TIKTOK_ACC,
+            browser_data_path="C:/profile_tiktok",
+            chrome_executable_path=CHROME_EXECUTABLE_PATH,
+        )
+        return await tk.standard_procedure(dates)
+    except Exception as e:
+        logger.error(f"Erro TikTok: {e}")
+        return []
+
+
+async def run_threads(dates):
+    if THREADS_ACC is None:
+        return []
+    try:
+        th = Threads_Automation(
+            account=THREADS_ACC,
+            browser_data_path="C:/profilex",
+            chrome_executable_path=CHROME_EXECUTABLE_PATH,
+        )
+        return await th.standard_procedure(dates)
+    except Exception as e:
+        logger.error(f"Erro Threads: {e}")
+        return []
+
+
+async def run_twitter(dates):
+    if TWITTER_ACC is None:
+        return []
+    try:
+        tw = Twitter_Automation(
+            account=TWITTER_ACC,
+            browser_data_path="C:/profile_twitter",
+            chrome_executable_path=CHROME_EXECUTABLE_PATH,
+        )
+        return await tw.standard_procedure(dates)
+    except Exception as e:
+        logger.error(f"Erro Twitter: {e}")
+        return []
+
+
+
+async def run_parallel(dates, social_man):
+
+   
+    yt_res, tk_res, th_res, tw_res = await asyncio.gather(
+        run_youtube(dates),
+        run_tiktok(dates),
+        run_threads(dates),
+        run_twitter(dates),
+    )
+
+    # Redes Meta (não async)
+    face_res = get_face_essencial(social_man, dates)
+    insta_res = get_insta_essencial(social_man, dates)
+
+   
+    result = merge_posts(
+        yt_res,
+        tk_res,
+        th_res,
+        tw_res,
+        face_res,
+        insta_res,
+    )
+
+    return result
+
+
+
+async def main():
+
+    logger.info("Iniciando coleta...")
+
+    dt = Date_Utils()
+    period = dt.return_period()
+
+    since = period["start_date"]["value"]
+    until = period["final_date"]["value"]
+
+    dates = [since, until]
+
+    logger.info(f"Período → {since}  até  {until}")
+
+   
+    social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, "./data")
+    social_man.date_optional = dates
+
+ 
+    result = await run_parallel(dates, social_man)
+
+ 
+    try:
+        df = pd.DataFrame(result)
+        df.to_excel("Relatorio Geral Redes.xlsx", index=False)
+        logger.info("Arquivo gerado com sucesso: Relatorio Geral Redes.xlsx")
+    except Exception as e:
+        logger.error(f"Erro ao salvar Excel: {e}")
+
+    print("\n===== RESULTADO FINAL =====")
+    print(result)
+
+
 if __name__ == "__main__":
-	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
-	
-	ttk = None if TIKTOK_ACC == None else TikTok.Tiktok_Automation(TIKTOK_ACC)
-	ttk.start_browser()
-	ytb = None if YOUTUBE_ACC == None else Youtube.Youtube_Automation(YOUTUBE_ACC, ttk.playwright, browser=ttk.browser, page=ttk.page)
-	twt = None if TWITTER_ACC == None else Twitter.Twitter_Automation(TWITTER_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
-	threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
-
-	dateOpt = sys.argv
-	logger.info(f"DATE OPT LEN IS: {len(dateOpt)}")
-	dt_man = Date_Utils()
-	dates = dt_man.return_period()
-	since = dates["start_date"]["value"]
-	until = dates["final_date"]["value"]
-
-	logger.info(f"since is: {since} and until is: {until}")
-	social_man.date_optional = [since, until]
-	period = social_man.return_period()
-	if since < until:
-		logger.info("nova solicitação!")
-		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
-		result = merge_posts(
-			# get_tiktok_essencial(ttk, [since, until])
-			get_twitter_essencial(twt, [since, until]),
-			# get_threads_essencial(threads, [since, until]),
-			# get_insta_essencial(social_man, [since, until]),
-			# get_face_essencial(social_man, [since, until]),
-			# get_youtube_essencial(ytb, [since, until]),
-			)
-		try:
-			pd.DataFrame(result).to_excel("Relatorio Twitter.xlsx")
-		except Exception as e:
-			logger.error(f"Error writing to Excel: {e}")
-
-		
-		# Files_Handling("./data/").write_file(result, "data_result.json")
-		# ytb.close_browser()
+    asyncio.run(main())

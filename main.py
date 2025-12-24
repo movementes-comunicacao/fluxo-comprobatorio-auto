@@ -16,9 +16,8 @@ logger = logging.getLogger(__name__)
 env_variable_prefix = "nit"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
-	
 	ttk = None if TIKTOK_ACC == None else TikTok.Tiktok_Automation(TIKTOK_ACC)
-	ttk.start_browser()
+	ttk.start_browser_user()
 	ytb = None if YOUTUBE_ACC == None else Youtube.Youtube_Automation(YOUTUBE_ACC, ttk.playwright, browser=ttk.browser, page=ttk.page)
 	threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 	twt = None if TWITTER_ACC == None else Twitter.Twitter_Automation(TWITTER_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
@@ -43,16 +42,17 @@ if __name__ == "__main__":
 	if since < until:
 		logger.info("nova solicitação!")
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
+		print("ttk is: ", twt)
 		result = merge_posts(
-			get_youtube_essencial(ytb, [since, until]),
-			get_tiktok_essencial(ttk, [since, until]),
-			get_threads_essencial(threads, [since, until]),
+			# get_youtube_essencial(ytb, [since, until]),
+			# get_tiktok_essencial(ttk, [since, until]),
+			# get_threads_essencial(threads, [since, until]),
 			get_twitter_essencial(twt, [since, until]),
-			get_insta_essencial(social_man, [since, until]),
-			get_face_essencial(social_man, [since, until]),
+			# get_insta_essencial(social_man, [since, until]),
+			# get_face_essencial(social_man, [since, until]),
 			)
 		try:
-			pd.DataFrame(result).to_excel("Relatorio.xlsx")
+			pd.DataFrame(result).to_excel("Relatorio teste.xlsx")
 		except Exception as e:
 			logger.error(f"Error writing to Excel: {e}")
 		# if SHEET_URL != "None" and len(dateOpt) == 1:
