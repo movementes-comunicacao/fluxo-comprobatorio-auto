@@ -28,4 +28,88 @@ def get_insta_essencial(social_man: Social_Manager, dates: list) -> list:
             })
     return result
 
+def get_tiktok_essencial(data) -> list:
+    if data is None:
+        return []
+    result = []
+    print("DATA TIKTOK IS: ", data)
+    input("PAUSA")
+    for item in data:
+        for link, info in item.items():
+            result.append(
+                {
+                'date_created': info.get('date_created', ''),
+                'description': info.get('description', ''),
+                'link_url': link,
+                'views': info.get('views', 0),
+                'likes': info.get('likes', 0),
+                'comments': info.get('comments', 0),
+                'shares': info.get('shares', 0),
+                'reposts': info.get('reposts', 0),
+                'save': info.get('save', 0),
+                
+                }
+            )
+    return result
 
+def get_youtube_essencial(data) -> list:
+    if data is None:
+        return []
+    result = []
+    print("DATA YOUTUBE IS: ", data)
+    input("PAUSA")
+    for item in data:
+        for link, info in item.items():
+            result.append(
+                {
+                'date_created': info.get('date_created', ''),
+                'description': info.get('description', ''),
+                'link_url': link,
+                'views': info.get('views', 0),
+                'likes': info.get('likes', 0),
+                'comments': info.get('comments', 0),
+                }
+            )
+    return result
+
+def get_threads_essencial(data) -> list:
+    if data is None:
+        return []
+    result = []
+    print("DATA THREADS IS: ", data)
+    input("PAUSA")
+    for item in data:
+        result.append(
+            {
+            'date_created': item.get('date_created', ''),
+            'description': item.get('description', ''),
+            'link_url': item.get('link_url', ''),
+            'visualizations': item.get('visualizations', 0),
+            'likes': item.get('likes', 0),
+            'comments': item.get('comments', 0),
+            'shares': item.get('shares', 0),
+            'reposts': item.get('reposts', 0),
+            }
+        )
+    return result
+
+def get_twitter_essencial(data) -> list:
+    if data is None:
+        return []
+    result = []
+    print("DATA TWITTER IS: ", data)
+    input("PAUSA")
+    for item in data:
+        for link, info in item.items():
+            result.append(
+                {
+                'date_created': info.get('date_created', ''),
+                'description': info.get('description', ''),
+                'link_url': link,
+                'views': info.get('views', 0),
+                'likes': info.get('likes', 0),
+                'comments': info.get('comments', 0),
+                'shares': info.get('shares', 0),
+                }
+            )
+    return result
