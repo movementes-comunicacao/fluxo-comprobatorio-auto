@@ -5,7 +5,10 @@ from components.Twitter_Manager.module.scraping_twt import Twitter_Manager, Beau
 from components.PlayWrightAuto.SocialMedia import TikTok, Threads, Twitter, Youtube
 # from components.PlayWrightAuto.SocialMedia.Twitter import Twitter_Automation
 from utils.read_env import *
+import logging
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger(__name__)
 def get_face_essencial(social_man: Social_Manager, dates: list)->list:        
 	result =[]
 	if social_man != None:
@@ -36,16 +39,25 @@ def get_insta_essencial(social_man: Social_Manager, dates: list)->list:
 
 def get_tiktok_essencial(tiktok_man: TikTok.Tiktok_Automation, dates: list)->list:
 	result = []
-	if tiktok_man != None:
-		models = tiktok_man.standard_procedure(dates)
-		for link, post in models.items():
-			result.append(
-				{
-				"date_created": post['date_created'],
-				'description': post['description'],
-				'link_url': link	
-				}
-			)
+	try:
+		if tiktok_man != None:
+			models = tiktok_man.standard_procedure(dates)
+			for link, post in models.items():
+				result.append(
+					{
+					"date_created": post['date_created'],
+					'description': post['description'],
+					'link_url': link,
+					'likes': post.get('digg_count', 0),
+					'shares': post.get('share_count', 0),
+					'comments': post.get('comment_count', 0),
+					'collect': post.get('collect_count', 0),
+					'reposts': post.get('repost_count', 0),
+					'views': post.get('play_count',0)
+					}
+				)
+	except Exception as e:
+		logger.error(f"Error in get_tiktok_essencial: {e}")
 	return result
 
 
@@ -61,11 +73,15 @@ def get_threads_essencial(threads_man: Threads.Threads_Automation, dates: list)-
 						'date_created': post['Data'],
 						'description': post['Descrição'],
 						'link_url': link,
+						'likes': post.get('Curtidas',0),
+						'comments': post.get('Comentários',0),
+						'reposts': post.get('Repostados',0),
+						'shares': post.get('Compartilhamentos',0),
 						}
 					)
-		return result
-	except:
-		return []
+	except Exception as e:
+		logger.error(f"Error in get_threads_essencial: {e}")
+	return result
 	
 def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)->list:
 	try:
@@ -79,15 +95,22 @@ def get_twitter_essencial(twitter_man : Twitter.Twitter_Automation, dates: list)
 						'date_created': post['Data'],
 						'description': post['Descrição'],
 						'link_url': link,
+						'comments': post.get('replies', 0),
+						'bookmark': post.get('bookmarks', 0),
+						'reposts': post.get('reposts', 0),
+						'likes': post.get('likes', 0),
+						'views': post.get('views', 0)
 						}
 					)
 			return result
-	except:
-		return []
+	except Exception as e:
+		logger.error(f"Error in get_twitter_essencial: {e}")
+	return result
 
-# DEPRECATED
+
 
 def getTwitterAndThreads(dates: list)->list:
+	"""Deprecated"""
 	result = []
 	if (TWITTER_ACC != None):
 		twitter_man = Twitter_Manager(TWITTER_ACC, BROWSER_DATA_PATH, USER_AGENT,"Default",other_options=False,disable_graphics=False, remote_connection=False)
@@ -117,8 +140,8 @@ def getTwitterAndThreads(dates: list)->list:
 	return result
 
 def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
+	result = []
 	try: 
-		result = []
 		if youtb != None:
 			model = youtb.standard_procedure(dates)
 			for link, data in model.items():
@@ -126,9 +149,12 @@ def get_youtube_essencial(youtb: Youtube.Youtube_Automation | None, dates:list):
 					{
 					'date_created': data["date"],
 					'description': data["title"],
-					'link_url': link
+					'link_url': link,
+					'likes': data.get('likes', 0),
+					'comments': data.get('comments', 0),
+					'views': data.get('views', 0)
 					}
 				)
-			return result
 	except:
-		return []
+		logger.error("Error in get_youtube_essencial")
+	return result
