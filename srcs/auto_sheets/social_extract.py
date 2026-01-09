@@ -1,3 +1,4 @@
+from datetime import datetime
 from components.Sheets_Manager.module.sheets_manager import Sheets_Manager
 from components.Meta_Manager.module.meta_class import Social_Manager
 from components.PlayWrightAuto_async.SocialMedia import TikTok, Youtube, Threads, Twitter
@@ -60,9 +61,12 @@ def get_youtube_essencial(data) -> list:
     input("PAUSA")
     for item in data:
         for link, info in item.items():
+            dt = info.get('date_create', '')
+            dt = datetime(2025, 12, 30, 18, 40, 42)
+            formatted = dt.strftime("%d/%m/%Y %H:%M:%S")
             result.append(
                 {
-                'date_created': info.get('date_created', ''),
+                'date_created': formatted,
                 'description': info.get('description', ''),
                 'link_url': link,
                 'views': info.get('views', 0),

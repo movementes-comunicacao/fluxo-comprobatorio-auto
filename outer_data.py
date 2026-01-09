@@ -73,6 +73,7 @@ async def main():
         result = await run_sequence(dates, core)
 
         df = pd.DataFrame(result)
+        print("GERANDO ARQUIVO EXCEL...",df)
         df.to_excel("Relatorio Geral Redes.xlsx", index=False)
         logger.info("Arquivo gerado com sucesso: Relatorio Geral Redes.xlsx")
 
