@@ -62,7 +62,6 @@ def get_youtube_essencial(data) -> list:
     for item in data:
         for link, info in item.items():
             dt = info.get('date_create', '')
-            dt = datetime(2025, 12, 30, 18, 40, 42)
             formatted = dt.strftime("%d/%m/%Y %H:%M:%S")
             result.append(
                 {

@@ -39,12 +39,12 @@ async def run_sequence(dates, core):
     tw_res = get_twitter_essencial(tw_data)
 
     result = merge_posts(
+        face_res,
+        insta_res,
         tk_res,
         yt_res,
         th_res,
-        tw_res,
-        insta_res,
-        face_res
+        tw_res
     )
 
     return result
