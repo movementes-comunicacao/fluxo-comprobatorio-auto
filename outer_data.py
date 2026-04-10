@@ -13,7 +13,6 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
-env_variable_prefix = "nit"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
 	
@@ -37,15 +36,15 @@ if __name__ == "__main__":
 		logger.info("nova solicitação!")
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		result = merge_posts(
-			# get_tiktok_essencial(ttk, [since, until]),
 			# get_twitter_essencial(twt, [since, until]),
-			get_threads_essencial(threads, [since, until]),
+			# get_threads_essencial(threads, [since, until]),
 			# get_insta_essencial(social_man, [since, until]),
 			# get_face_essencial(social_man, [since, until]),
 			# get_youtube_essencial(ytb, [since, until]),
+			get_tiktok_essencial(ttk, [since, until]),
 			)
 		try:
-			pd.DataFrame(result).to_excel("Relatorio metricas.xlsx")
+			pd.DataFrame(result).to_excel("Relatorio Outro.xlsx")
 		except Exception as e:
 			logger.error(f"Error writing to Excel: {e}")
 

@@ -13,14 +13,14 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
-env_variable_prefix = "nit"
+env_variable_prefix = "marica"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
 	
 	ttk = None if TIKTOK_ACC == None else TikTok.Tiktok_Automation(TIKTOK_ACC)
 	ttk.start_browser()
 	ytb = None if YOUTUBE_ACC == None else Youtube.Youtube_Automation(YOUTUBE_ACC, ttk.playwright, browser=ttk.browser, page=ttk.page)
-	threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
+	# threads = None if THREADS_ACC == None else Threads.Threads_Automation(THREADS_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 	twt = None if TWITTER_ACC == None else Twitter.Twitter_Automation(TWITTER_ACC, ttk.playwright, browser_data_path=BROWSER_DATA_PATH, chrome_executable_path=CHROME_EXECUTABLE_PATH)
 
 	dateOpt = sys.argv
@@ -48,7 +48,7 @@ if __name__ == "__main__":
 			get_face_essencial(social_man, [since, until]),
 			get_tiktok_essencial(ttk, [since, until]),
 			get_youtube_essencial(ytb, [since, until]),
-			get_threads_essencial(threads, [since, until]),
+			# get_threads_essencial(threads, [since, until]),
 			get_twitter_essencial(twt, [since, until]),
 			)
 		try:
