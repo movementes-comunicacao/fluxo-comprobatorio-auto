@@ -13,7 +13,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
-env_variable_prefix = "nit"
+env_variable_prefix = "marica"
 if __name__ == "__main__":
 	social_man = Social_Manager(ACCOUNT, CONFIG_INI_PATH, './data')
 	ttk = None if TIKTOK_ACC == None else TikTok.Tiktok_Automation(TIKTOK_ACC)
@@ -44,12 +44,12 @@ if __name__ == "__main__":
 		# SeparateMonthsByReq precisa vir aqui -> para caso cada mês dê ruim.
 		print("ttk is: ", twt)
 		result = merge_posts(
-			# get_youtube_essencial(ytb, [since, until]),
-			# get_tiktok_essencial(ttk, [since, until]),
-			# get_threads_essencial(threads, [since, until]),
+			get_youtube_essencial(ytb, [since, until]),
+			get_tiktok_essencial(ttk, [since, until]),
+			get_threads_essencial(threads, [since, until]),
 			get_twitter_essencial(twt, [since, until]),
-			# get_insta_essencial(social_man, [since, until]),
-			# get_face_essencial(social_man, [since, until]),
+			get_insta_essencial(social_man, [since, until]),
+			get_face_essencial(social_man, [since, until]),
 			)
 		try:
 			pd.DataFrame(result).to_excel("Relatorio teste.xlsx")
